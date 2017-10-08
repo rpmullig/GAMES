@@ -1,0 +1,120 @@
+// Robert Mulligan 
+
+import java.util.*;
+
+public class DiceGame {
+  public static void main( String[] args) {
+    
+    Dice d = new Dice();
+    for( int i = 0; i < 20; i++) {
+      System.out.println( d.Roll() + "");
+    }
+    
+    System.out.println();
+    
+    Player me = new Player( "Robert" );
+    
+    System.out.println( me.print() + " " + me.score() + " " + me.isWinner() );
+    me.add(6);
+    System.out.println( me.print() + " " + me.score() + " " + me.isWinner() );
+   me.add(2);
+    System.out.println( me.print() + " " + me.score() + " " + me.isWinner() );
+   me.add(5);
+    System.out.println( me.print() + " " + me.score() + " " + me.isWinner() );
+   me.add(6);
+    System.out.println( me.print() + " " + me.score() + " " + me.isWinner() );
+   me.add(3);
+    System.out.println( me.print() + " " + me.score() + " " + me.isWinner() );
+    me.add(1);
+   
+    
+    ArrayList<Player> players = new ArrayList<Player>();
+    for( int i = 0; i < args.length; i++ ) {
+      players.add( new Player( args[i] ) );
+      Game a = new Game( players ); 
+      a.start();
+    } 
+  }
+} //
+
+class Dice {
+  
+  void Dice() { }
+    
+   // not needed, as I changed the way I did the solution
+  // private int[] faces = new { 1, 2, 3, 4, 5, 6 };
+  
+  public int Roll() {
+    // return faces[ Math.round((Math.Random() * 5) + 1) ];
+      return (int) ( Math.random() * 5 + 1 );
+  }
+}
+
+class Player{
+  
+  private String name;
+  private boolean winner;
+    
+  private int score = 0;
+  // private int[] dicevalues;
+  private ArrayList<Integer> diceValues = new ArrayList<Integer>();
+    
+  
+  // added return statement to constrcuter
+  Player ( String name ) {
+    this.name = name; 
+  }    
+  
+  String print () {
+    return name;  
+  }
+  
+  void add( int num ) {
+    this.score = this.score + num;
+    
+    this.diceValues.add(num);
+  }
+  
+  String report() {
+   return this.diceValues.toString(); 
+  }
+  int score() {
+      return this.score;
+  }
+  
+    boolean isWinner() {
+      // mine wasn't wrong, I just shortened it like this
+      return ( winner = ( this.score >= 21 ) ); 
+    }
+}
+
+
+class Game {
+  
+  private ArrayList<Player> players = new ArrayList<Player>();
+
+  Game ( ArrayList<Player> players ) {
+    // I had to add this in.. originally I did it with arrays not arrayList
+    this.players = players;
+  }
+  void start() {
+    Dice d = new Dice();
+    boolean bool = false;
+    
+     while( !bool ) {
+      for ( int i = 0; i < this.players.size() ; i++) {
+        this.players.get( i ).add( d.Roll() );
+        System.out.println( this.players.get(i).print() 
+                             + ": " 
+                             + this.players.get(i).report()
+                             + " "
+                             + this.players.get(i).score() 
+                             +" "
+                             + this.players.get( i ).isWinner() ); 
+ 
+       bool = ( this.players.get(i).isWinner() ) ;
+      }
+     } 
+  }
+}
+  
